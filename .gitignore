@@ -63,3 +63,12 @@ analysis/callers/runs/
 analysis/callers/__pycache__/
 analysis/callers/blobs_*
 analysis/callers/stack_*.png
+
+# --- published exceptions -------------------------------------------------
+# The ignore rules above are inherited from the working repository, where
+# these directories hold machine-local material. The two files below are
+# needed to reproduce the published analysis and are tracked deliberately.
+!birdnet/info/
+!birdnet/info/emmet_species_list.txt
+!sites/
+!sites/ferguson.toml

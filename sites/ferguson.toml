@@ -1,0 +1,42 @@
+# Site configuration for the Ferguson / Carbon Ranch array, as used in
+# the paper. Audio directories and the orthomosaic basemap are
+# machine-specific and are left blank; everything else is as published.
+
+# cardinal.toml — Ferguson / Carbonranch field site (Eisen Lab)
+#
+# Usage:
+#   export CARDINAL_CONFIG=/path/to/Cardinal/sites/ferguson.toml
+
+[site]
+name     = "Ferguson / Carbonranch"
+timezone = "America/Chicago"
+lat      =  33.7271
+lon      = -93.3066
+
+[audio]
+topdirs = [
+    # Point these at your own audio drives.
+    "/path/to/audio/drive1",
+    "/path/to/audio/drive2",
+]
+sample_rate = 44100
+
+[paths]
+catalog        = "wavfiles.parquet"
+recorder_zones = "regions/recorder_zones.json"
+site_species   = "birdnet/info/emmet_species_list.txt"
+checkpoint_dir = "birdnet/checkpoints"
+orthomosaic    = ""   # optional GeoTIFF basemap for the paper figures
+
+[birdnet]
+model_path  = ""
+labels_path = ""
+
+[thresholds]
+concordance_probs            = [0.9, 0.75, 0.5]
+min_active_recorders         = 4
+flexible_min_max_prob        = 0.9
+flexible_min_concordant_recs = 3
+flexible_max_per_species     = 1000
+strict_agreement_fraction    = 1.0
+strict_min_prob              = 0.9
