@@ -1,0 +1,83 @@
+# cardinal.toml — Cardinal site configuration
+#
+# Copy this file to cardinal.toml (or any location you prefer) and edit it
+# to match your field site.  Point the CARDINAL_CONFIG environment variable
+# at it if you keep it outside the project directory:
+#
+#   export CARDINAL_CONFIG=/path/to/your/cardinal.toml
+#
+# If CARDINAL_CONFIG is not set, Cardinal looks for cardinal.toml in the
+# current working directory, then in your home directory.
+
+# ---------------------------------------------------------------------------
+# Site identity
+# ---------------------------------------------------------------------------
+[site]
+name     = "My Field Site"          # free-form label used in logs and outputs
+timezone = "America/Chicago"        # IANA timezone name (e.g. "America/New_York")
+lat      =  0.0                     # site latitude  (decimal degrees, WGS-84)
+lon      =  0.0                     # site longitude (decimal degrees, WGS-84)
+
+# ---------------------------------------------------------------------------
+# Audio data
+# ---------------------------------------------------------------------------
+[audio]
+# Top-level directories to walk when building the audio catalog.
+# The pipeline skips any subdirectory that contains a 'donotindex.txt' file.
+topdirs = [
+    "/path/to/your/audio/drive1",
+    "/path/to/your/audio/drive2",
+]
+
+# Target sample rate.  Files recorded at other rates are resampled on load.
+sample_rate = 44100
+
+# ---------------------------------------------------------------------------
+# Catalog and pipeline outputs
+# ---------------------------------------------------------------------------
+[paths]
+# Master audio catalog written by `catalog.build`.
+catalog          = "wavfiles.parquet"
+
+# GeoJSON file defining spatial regions used to assign recorder_group labels.
+recorder_zones   = "regions/recorder_zones.json"
+
+# One common name per line; detections not on this list are dropped.
+# Leave blank ("") to keep all BirdNET species.
+site_species     = ""
+
+# Drone orthomosaic (GeoTIFF) used as the basemap in the paper figures.
+# Optional -- leave blank ("") if you have none.
+orthomosaic      = ""
+
+# Intermediate checkpoints (reloaded to skip recomputation on re-runs).
+checkpoint_dir   = "birdnet/checkpoints"
+
+# ---------------------------------------------------------------------------
+# BirdNET model
+# ---------------------------------------------------------------------------
+[birdnet]
+# Paths to the TFLite model and labels file.
+# If left blank (""), Cardinal will try to locate them automatically from
+# the installed birdnet_analyzer package.
+model_path  = ""
+labels_path = ""
+
+# ---------------------------------------------------------------------------
+# Candidate selection thresholds
+# ---------------------------------------------------------------------------
+[thresholds]
+# Probability levels at which concordance is evaluated.
+concordance_probs      = [0.9, 0.75, 0.5]
+
+# Minimum recorders that must be active at the time of a detection.
+min_active_recorders   = 4
+
+# "flexible" strategy
+flexible_min_max_prob        = 0.9    # peak probability across recorders
+flexible_min_concordant_recs = 3      # recorders agreeing at p50 or above
+flexible_max_per_species     = 1000   # cap on candidates per species / recorder group
+
+# "strict" strategy
+strict_agreement_fraction = 1.0       # fraction of active recorders that must agree
+strict_min_prob           = 0.9

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cardinal"
+version = "0.1.0"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = [
+  "numpy",
+  "scipy",
+  "matplotlib",
+  "pandas",
+  "pyarrow",
+  "librosa",
+  "geopandas",
+  "pyproj",
+  "rasterio",
+  "shapely",
+  "suntime",
+  "requests",
+]
+
+[project.optional-dependencies]
+# BirdNET inference needs the birdnet_analyzer package (supplies the
+# pretrained model/labels config.py auto-discovers) plus exactly one TFLite
+# backend -- pick whichever backend installs cleanly on your platform.
+birdnet-tflite = ["birdnet_analyzer", "tflite-runtime"]
+birdnet-tensorflow = ["birdnet_analyzer", "tensorflow"]
+
+[project.scripts]
+cardinal-catalog       = "catalog.build:main"
+cardinal-deployments   = "catalog.deployments:main"
+cardinal-reorganize    = "catalog.reorganize:main"
+cardinal-birdnet       = "birdnet.run:main"
+cardinal-pipeline      = "birdnet.pipeline:main"
+cardinal-suntimes      = "birdnet.suntimes:main"
+cardinal-freqprofiles  = "localize.freqprofiles:main"
+cardinal-temperature   = "localize.temperature:main"
+
+[tool.setuptools]
+packages = ["catalog", "birdnet", "localize", "localize.localize_utils", "analysis"]
+py-modules = ["config"]
