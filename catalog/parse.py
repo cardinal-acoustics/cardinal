@@ -107,7 +107,7 @@ def parse_filename(filepath: str) -> pd.Series:
     if not matched:
         pattern = re.compile(
             r"S(\d{8}T\d{6}\.\d{6}\+\d{4})_E(\d{8}T\d{6}\.\d{6}\+\d{4})_"
-            r"([+-]\d+\.\d+)([+-]\d+\.\d+)\.wav"
+            r"([+-]\d+\.\d+)([+-]\d+\.\d+)\.(?:wav|flac)"
         )
         match = pattern.search(filename)
         if match:
@@ -124,7 +124,7 @@ def parse_filename(filepath: str) -> pd.Series:
     if not matched:
         pattern = re.compile(
             r"S(\d{8}T\d{6}\.\d{6}\+\d{4})_E(\d{8}T\d{6}\.\d{6}\+\d{4})_"
-            r"([+-]\d+\.\d+)([+-]\d+\.\d+)\_00000_000.wav"
+            r"([+-]\d+\.\d+)([+-]\d+\.\d+)\_00000_000\.(?:wav|flac)"
         )
         match = pattern.search(filename)
         if match:
@@ -141,7 +141,7 @@ def parse_filename(filepath: str) -> pd.Series:
     if not matched:
         pattern = re.compile(
             r"(\d{8}T\d{6}\+\d{4})_REC_"
-            r"([+-]\d+\.\d+)([+-]\d+\.\d+)\.wav"
+            r"([+-]\d+\.\d+)([+-]\d+\.\d+)\.(?:wav|flac)"
         )
         match = pattern.search(filename)
         if match:
@@ -155,7 +155,7 @@ def parse_filename(filepath: str) -> pd.Series:
 
     # --- Solarbar: start timestamp + REC (no GPS) ---
     if not matched:
-        pattern = re.compile(r"(\d{8}T\d{6}\+\d{4})_REC.wav")
+        pattern = re.compile(r"(\d{8}T\d{6}\+\d{4})_REC\.(?:wav|flac)")
         match = pattern.search(filename)
         if match:
             s = match.group(1)
@@ -167,7 +167,7 @@ def parse_filename(filepath: str) -> pd.Series:
 
     # --- S4A: standard segment filename ---
     if not matched:
-        pattern = re.compile(r"(S4A\d{5})_(\d{1})_(\d{8}_\d{6})_\d{3}.wav")
+        pattern = re.compile(r"(S4A\d{5})_(\d{1})_(\d{8}_\d{6})_\d{3}\.(?:wav|flac)")
         match = pattern.search(filename)
         if match:
             recorder, channel, s = match.groups()
@@ -178,7 +178,7 @@ def parse_filename(filepath: str) -> pd.Series:
 
     # --- S4A: GPS-synced filename with $ delimiter ---
     if not matched:
-        pattern = re.compile(r"(S4A\d{5})_(\d{8})\$(\d{6})\.(?:wav|w4v)$")
+        pattern = re.compile(r"(S4A\d{5})_(\d{8})\$(\d{6})\.(?:wav|w4v|flac)$")
         match = pattern.search(filename)
         if match:
             recorder, date_str, time_str = match.groups()
@@ -189,7 +189,7 @@ def parse_filename(filepath: str) -> pd.Series:
 
     # --- S4A: GPS-synced filename with _ delimiter ---
     if not matched:
-        pattern = re.compile(r"(S4A\d{5})_(\d{8}_\d{6})\.(?:wav|w4v)$")
+        pattern = re.compile(r"(S4A\d{5})_(\d{8}_\d{6})\.(?:wav|w4v|flac)$")
         match = pattern.search(filename)
         if match:
             recorder, s = match.groups()
